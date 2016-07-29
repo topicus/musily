@@ -1,34 +1,13 @@
-import os
-import json
-import copy
-import pprint
-from flask import Flask, request, jsonify
-from models import Friend
-from graph import Graph
-from utils import parse_filters
-from statistics import GraphStatistics
+from flask import Flask
+from utils import SetJSONEncoder
 
-app = Flask(__name__)
-data_dir = os.path.dirname(os.path.abspath(__file__)) + '/data'
-friend = Friend(data_dir + '/melomanos.txt', data_dir + '/relaciones.txt')
 
-@app.route("/filter")
-def create_group():
-  ## canciones[between]=0,20&sexo[equal]=mujer  
-  filters = parse_filters(request.args.items())
-  gph = Graph()
-  people, friendships = friend.filter(filters)
-  statistics = GraphStatistics(gph, people)
-  for k, p in people.iteritems():
-    gph.add_node(p['usuario'])
-  for f in friendships:
-    gph.add_edge([f['usuario_1'], f['usuario_2']], songs=f['canciones'])
+def create_app():
+  from views.index import index_view
+  from views.api import api_view
 
-  return jsonify(statistics.compute())
-
-@app.route("/")
-def index():
-  return 'hello'
-
-if __name__ == "__main__":
-  app.run()
+  app = Flask(__name__)
+  app.register_blueprint(api_view)
+  app.register_blueprint(index_view)
+  app.json_encoder = SetJSONEncoder
+  return app

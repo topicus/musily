@@ -1,6 +1,8 @@
 import re
+import os
 
 PARAM_SEPARATOR = ','
+DS = '/'
 
 def divide(a, b):
   try:
@@ -21,3 +23,6 @@ def parse_filters(query_filters):
     (field, kind) = re.findall(regex, ft[0])[0]
     filters.append({'field': field, 'type': kind, 'value': parse_filter_values(ft[1]) })
   return filters
+
+def db_file(filename):
+  return os.path.abspath('server/data') + DS + filename
