@@ -1,0 +1,4 @@
+usuario_1|usuario_2|canciones
+1|4|23
+2|4|29
+3|0|29
