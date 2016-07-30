@@ -1,0 +1,2 @@
+export const ADD_FILTER = 'ADD_FILTER';
+export const CHANGE_FILTER_TYPE = 'CHANGE_FILTER_TYPE';

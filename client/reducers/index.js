@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 import groups from './groups';
+import filters from './filters';
 
 const reducers = combineReducers({
-  groups
+  groups,
+  filters
 });
 
 export default reducers;

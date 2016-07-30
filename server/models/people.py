@@ -20,12 +20,36 @@ class People(object):
   def between(self, item, ft):
     return min(ft['value']) <= int(item[ft['field']]) <= max(ft['value'])
 
-  def equal(self, item, ft):
+  def eq(self, item, ft):
     if ft['field'] in item:
       return item[ft['field']] == ft['value']
     else:
       return True
+
+  def gt(self, item, ft):
+    if ft['field'] in item:
+      return item[ft['field']] > ft['value']
+    else:
+      return True
+
+  def lt(self, item, ft):
+    if ft['field'] in item:
+      return item[ft['field']] < ft['value']
+    else:
+      return True
   
+  def gte(self, item, ft):
+    if ft['field'] in item:
+      return item[ft['field']] >= ft['value']
+    else:
+      return True
+
+  def lte(self, item, ft):
+    if ft['field'] in item:
+      return item[ft['field']] <= ft['value']
+    else:
+      return True
+
   def filter(self, filters):
     filtered = {}
     for k, p in self.__people.iteritems():

@@ -15,6 +15,7 @@
       .root {
         width: 100%;
         height: 100%;
+        font-family: "Trebuchet MS", Helvetica, sans-serif;
       }
     </style>
     <title><%= htmlWebpackPlugin.options.title || 'Musi.ly' %></title>

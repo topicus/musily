@@ -1,40 +1,52 @@
 import React, { Component } from 'react';
 import useSheet from 'react-jss';
-// import Kittens from '../components/Kittens';
+import GroupList from '../components/groups/GroupList';
 import { connect } from 'react-redux';
-import { requestGroup } from '../actions/groups';
+import { addGroup } from '../actions/groups';
 
 class Index extends Component {
   componentDidMount() {
-    this.props.requestGroup();
+    this.props.addGroup();
   }
 
   render() {
     const { sheet } = this.props;
 
     return (
-      <div className={sheet.classes.index}>
-      hello
+      <div className={sheet.classes.flexSplit}>
+        <div className={sheet.classes.flexSplitLeft}>
+          <GroupList />  
+        </div>
+        <div className={sheet.classes.flexSplitRight}>
+          right
+        </div>
       </div>
     );
   }
 }
 
 const STYLES = {
-  index: {
-    width: '100%',
-    height: '100%',
+  flexSplit: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection:'row',
     justifyContent: 'center',
-    backgroundColor: '#FFDDDD',
-    color: '#660000'
-  }
+    position:'relative',
+    minHeight:'100vh',
+  },
+  flexSplitLeft: {
+    width: '30%',
+    backgroundColor: '#e9e9e9',
+    overflowY: 'auto',
+    maxHeight:'100vh',
+  },
+  flexSplitRight: {
+    width: '70%',
+  }  
 };
 
 Index = connect(
   () => ({}),
-  { requestGroup }
+  { addGroup }
 )(
   useSheet(Index, STYLES)
 );
