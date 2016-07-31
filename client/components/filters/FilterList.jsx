@@ -6,14 +6,15 @@ import { addFilter } from '../../actions/filters';
 
 const FilterList = ({ sheet, filters, addFilter}) => (
   <div className={sheet.classes.filters}>
-    <div>Filters</div>
     {filters.map((filter, index) => (
-      <Filter
-        key={`filter-${index}`}
-        filter={Object.assign({filterIndex: index}, filter)}
-        />
+      <form key={`form-${index}`} className="form-inline">
+        <Filter
+          key={`filter-${index}`}
+          filter={filter}
+          />
+      </form>
     ))}
-    <button onClick={addFilter.bind(this)}>Add filter</button>
+    <button className="btn btn-default" onClick={addFilter.bind(this)}>Add filter</button>
   </div>
 );
 

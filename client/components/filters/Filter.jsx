@@ -1,35 +1,45 @@
 import React, { PropTypes } from 'react';
 import useSheet from 'react-jss';
 import { connect } from 'react-redux';
+import {
+  FIELDS, 
+  FILTER_TYPES, 
+  FILTER_TYPE_VALUE, 
+  FILTER_TYPE_RANGE, 
+  COMPARATORS
+} from '../../constants/filters';
+
 import { 
   changeFilterType, 
   changeFilterValue, 
   changeFilterField, 
-  changeFilterOperator
+  changeFilterOperator,
+  deleteFilter
 } from '../../actions/filters';
 
-const FILTER_TYPES = ['value', 'range'];
-const comparators = ['eq', 'gt', 'lt', 'gte', 'lte'];
-
-const Filter = ({ sheet, filter, fields, changeFilterType }) => {
+const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeFilterField, changeFilterValue, deleteFilter}) => {
   let inputs, cmps, minInput, maxInput;
-  if(filter.filterType === 'range') {
+  if(filter.filterType === FILTER_TYPE_RANGE) {
     inputs = <span>
       <input 
-        className={sheet.classes.input} 
+        className="form-control" 
         type="text"
         ref={(node) => {
           minInput = node
         }}
+        size="5"
+        placeholder="Min."
         defaultValue={(filter.value) ? filter.value[0] : ''}
         onChange={(e) => changeFilterValue([e.target.value, maxInput.value], filter.filterIndex)}
         />
       <input 
-        className={sheet.classes.input} 
+        className="form-control" 
         type="text"
         ref={(node) => {
           maxInput = node
         }}
+        size="5"
+        placeholder="Max."
         defaultValue={(filter.value) ? filter.value[1] : ''}
         onChange={(e) => changeFilterValue([minInput.value, e.target.value], filter.filterIndex)}
         />        
@@ -39,14 +49,16 @@ const Filter = ({ sheet, filter, fields, changeFilterType }) => {
       <span>
         <input 
           onChange={(e) => changeFilterValue(e.target.value, filter.filterIndex)}
-          className={sheet.classes.input} 
-          type="text" 
+          className="form-control" 
+          type="text"
+          size="5"
+          placeholder="Value"
           defaultValue={filter.value}/>
       </span>
     );
     cmps = (
-      <select onChange={(e) => changeFilterOperator(e.target.value, filter.filterIndex)} defaultValue={filter.operator}>
-        {comparators.map((option, index) => (
+      <select className="form-control" onChange={(e) => changeFilterOperator(e.target.value, filter.filterIndex)} defaultValue={filter.operator}>
+        {COMPARATORS.map((option, index) => (
           <option key={`option-${index}`} value={option}>
             {option}
           </option>
@@ -56,35 +68,48 @@ const Filter = ({ sheet, filter, fields, changeFilterType }) => {
   }
   return (
     <div className={sheet.classes.filter}>
-      <select onChange={(e) => changeFilterType(e.target.value, filter.filterIndex)} defaultValue={filter.filterType}>
-        {FILTER_TYPES.map((option, index) => (
-          <option key={`option-${index}`} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      {cmps}
-      <select onChange={(e) => changeFilterField(e.target.value, filter.filterIndex)} defaultValue={filter.field}>
-        {fields.map((option, index) => (
-          <option key={`option-${index}`} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      {inputs}
+      <div className="form-group">
+        <select className="form-control" onChange={(e) => changeFilterField(e.target.value, filter.filterIndex)} defaultValue={filter.field}>
+          {Object.keys(FIELDS).map((option, index) => (
+            <option key={`option-${index}`} value={option}>
+              {FIELDS[option]['label']}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="form-group">
+        <select className="form-control" onChange={(e) => changeFilterType(e.target.value, filter.filterIndex)} defaultValue={filter.filterType}>
+          {FILTER_TYPES.map((option, index) => (
+            <option key={`option-${index}`} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>    
+      </div>      
+      <div className="form-group">
+        {cmps}
+      </div>
+      <div className="form-group">
+        {inputs}
+      </div>
+      <div className="form-group">
+        <a onClick={ (e) => { deleteFilter(filter.filterIndex) }} className="glyphicon glyphicon-remove"></a>
+      </div>
     </div>
   )
 };
 
-const STYLES = {
-  input: {
-    width: '30px'
-  },
-};
+const STYLES = {};
 
 export default connect(
-  (state, ownProps) => ({fields: state.fields || ['sexo', 'edad']}),
-  {changeFilterType}
+  (state, ownProps) => ({fields: state.fields}),
+  {
+    changeFilterType,
+    changeFilterField,
+    changeFilterOperator,
+    changeFilterValue,
+    deleteFilter
+  }
 )(
   useSheet(Filter, STYLES)
 );

@@ -5,11 +5,11 @@ import Group from './Group'
 import FilterList from '../filters/FilterList'
 import { addGroup } from '../../actions/groups';
 
-const GroupFrom = ({ sheet, filters, addGroup}) => {
+const GroupFrom = ({ sheet, filters, fields, addGroup}) => {
   return (
     <div className={sheet.classes.groupForm}>
       <FilterList />
-      <button onClick={addGroup.bind(this, filters)}>Add group</button>
+      <button className="btn btn-primary" onClick={addGroup.bind(this, filters)}>Create group</button>
     </div>
   );
 };

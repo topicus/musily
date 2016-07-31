@@ -57,3 +57,12 @@ export function resetFilters() {
     });
   } 
 }
+
+export function deleteFilter(filterIndex) {
+  return dispatch => {
+    dispatch({
+      type: actionTypes.DELETE_FILTER,
+      filterIndex
+    });
+  } 
+}

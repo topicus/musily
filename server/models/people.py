@@ -18,7 +18,7 @@ class People(object):
     return self.__people
   
   def between(self, item, ft):
-    return min(ft['value']) <= int(item[ft['field']]) <= max(ft['value'])
+    return min(ft['value']) <= float(item[ft['field']]) <= max(ft['value'])
 
   def eq(self, item, ft):
     if ft['field'] in item:

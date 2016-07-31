@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import useSheet from 'react-jss';
 import GroupList from '../components/groups/GroupList';
+import Graph from '../components/visualizations/Graph';
 import { connect } from 'react-redux';
 import { addGroup } from '../actions/groups';
 
 class Index extends Component {
   componentDidMount() {
-    this.props.addGroup();
+    this.props.addGroup([{filterType: 'value', field:'canciones', operator: 'lte', value: '200'}]);
   }
 
   render() {
@@ -18,7 +19,7 @@ class Index extends Component {
           <GroupList />  
         </div>
         <div className={sheet.classes.flexSplitRight}>
-          right
+          <Graph />
         </div>
       </div>
     );
@@ -45,7 +46,7 @@ const STYLES = {
 };
 
 Index = connect(
-  () => ({}),
+  state => state,
   { addGroup }
 )(
   useSheet(Index, STYLES)
