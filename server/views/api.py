@@ -22,4 +22,8 @@ def filter():
   for f in friendships:
     gph.add_edge([f['usuario_1'], f['usuario_2']], songs=f['canciones'])
   st = statistics.compute()
-  return jsonify({'statistics': st, 'graph': gph.graph})
+  return jsonify({
+    'statistics': st, 
+    'graph': gph.graph,
+    'fields': p.keys(),
+  })

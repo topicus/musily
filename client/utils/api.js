@@ -28,8 +28,15 @@ async function request({ url, data, params = {} }) {
   }
 }
 
-
-
 export function get(url) {
   return request({ url });
+}
+
+export function serialize_filters(filters=[]) {
+  let url_filters;
+  url_filters = filters.reduce( (query, filter) => {
+    return query + filter.field + '[' + filter.operator + ']=' + [filter.value].join(',') + '&'
+  }, '?');
+  console.log(url_filters);
+  return url_filters;
 }

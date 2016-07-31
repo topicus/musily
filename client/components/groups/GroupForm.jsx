@@ -5,16 +5,11 @@ import Group from './Group'
 import FilterList from '../filters/FilterList'
 import { addGroup } from '../../actions/groups';
 
-const GroupFrom = ({ sheet, addGroup}) => {
-  // let input;
-  //     <input ref={node => {
-  //       input = node;
-  //     }}/>
-
+const GroupFrom = ({ sheet, filters, addGroup}) => {
   return (
     <div className={sheet.classes.groupForm}>
       <FilterList />
-      <button onClick={() => addGroup()}>Add group</button>
+      <button onClick={addGroup.bind(this, filters)}>Add group</button>
     </div>
   );
 };
@@ -26,7 +21,7 @@ const STYLES = {
 };
 
 export default connect(
-  state => state,
+  state => ({filters: state.filters}),
   {addGroup}
 )(
   useSheet(GroupFrom, STYLES)

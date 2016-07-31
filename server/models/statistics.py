@@ -63,6 +63,7 @@ class GraphStatistics(object):
     self.statistics['shared_songs'] += int(data['songs'])
 
   def compute(self):
+    print self.friends
     if not(self.graph.processed()): self.graph.process()
     user_count = len(self.graph)
     self.analyze_group()

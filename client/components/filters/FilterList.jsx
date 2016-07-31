@@ -5,15 +5,15 @@ import Filter from './Filter';
 import { addFilter } from '../../actions/filters';
 
 const FilterList = ({ sheet, filters, addFilter}) => (
-  <div className={1}>
+  <div className={sheet.classes.filters}>
     <div>Filters</div>
     {filters.map((filter, index) => (
       <Filter
         key={`filter-${index}`}
-        filter={Object.assign({fiterIndex: index}, filter)}
+        filter={Object.assign({filterIndex: index}, filter)}
         />
     ))}
-    <button onClick={() => addFilter({filterType: 'range', field: 'hola', value: [0,10]})}>Add filter</button>
+    <button onClick={addFilter.bind(this)}>Add filter</button>
   </div>
 );
 
