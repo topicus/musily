@@ -7,7 +7,7 @@ import { addGroup } from '../actions/groups';
 
 class Index extends Component {
   componentDidMount() {
-    this.props.addGroup([{filterType: 'value', field:'canciones', operator: 'lte', value: '200'}]);
+    this.props.addGroup();
   }
 
   render() {

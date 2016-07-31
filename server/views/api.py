@@ -24,8 +24,5 @@ def filter():
   st = statistics.compute()
   return jsonify({
     'statistics': st, 
-    'graph': {
-      'nodes': {k:p for k, p in friend.people().iteritems() if k in people},
-      'links': [f for f in friend.friendships() if f['usuario_1'] in friendships and f['usuario_2'] in friendships]
-    }
+    'graph': gph.graph
   })

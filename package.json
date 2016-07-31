@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node server.js",
-    "lint": "eslint src"
+    "start": "bash scripts/start.sh",
+    "setup": "bash scripts/setup.sh"
   },
   "keywords": [],
   "author": "Mariano Carballal <marianocarballal@gmail.com> (http://github.com/topicus)",

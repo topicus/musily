@@ -29,7 +29,7 @@ const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeF
         }}
         size="5"
         placeholder="Min."
-        defaultValue={(filter.value) ? filter.value[0] : ''}
+        value={(filter.value) ? filter.value[0] : ''}
         onChange={(e) => changeFilterValue([e.target.value, maxInput.value], filter.filterIndex)}
         />
       <input 
@@ -40,7 +40,7 @@ const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeF
         }}
         size="5"
         placeholder="Max."
-        defaultValue={(filter.value) ? filter.value[1] : ''}
+        value={(filter.value) ? filter.value[1] : ''}
         onChange={(e) => changeFilterValue([minInput.value, e.target.value], filter.filterIndex)}
         />        
     </span>;
@@ -53,11 +53,11 @@ const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeF
           type="text"
           size="5"
           placeholder="Value"
-          defaultValue={filter.value}/>
+          value={filter.value || ''}/>
       </span>
     );
     cmps = (
-      <select className="form-control" onChange={(e) => changeFilterOperator(e.target.value, filter.filterIndex)} defaultValue={filter.operator}>
+      <select className="form-control" onChange={(e) => changeFilterOperator(e.target.value, filter.filterIndex)} value={filter.operator || ''}>
         {COMPARATORS.map((option, index) => (
           <option key={`option-${index}`} value={option}>
             {option}
@@ -69,7 +69,7 @@ const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeF
   return (
     <div className={sheet.classes.filter}>
       <div className="form-group">
-        <select className="form-control" onChange={(e) => changeFilterField(e.target.value, filter.filterIndex)} defaultValue={filter.field}>
+        <select className="form-control" onChange={(e) => changeFilterField(e.target.value, filter.filterIndex)} value={filter.field || ''}>
           {Object.keys(FIELDS).map((option, index) => (
             <option key={`option-${index}`} value={option}>
               {FIELDS[option]['label']}
@@ -78,7 +78,7 @@ const Filter = ({ sheet, filter, changeFilterType, changeFilterOperator, changeF
         </select>
       </div>
       <div className="form-group">
-        <select className="form-control" onChange={(e) => changeFilterType(e.target.value, filter.filterIndex)} defaultValue={filter.filterType}>
+        <select className="form-control" onChange={(e) => changeFilterType(e.target.value, filter.filterIndex)} value={filter.filterType || ''}>
           {FILTER_TYPES.map((option, index) => (
             <option key={`option-${index}`} value={option}>
               {option}

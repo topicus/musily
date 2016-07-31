@@ -54,6 +54,7 @@ const resetFilters = (state, action)  => {
 
 const deleteFilter = (state, action)  => {
   let filters = state.filter(f => f.filterIndex != action.filterIndex);
+  console.log(filters);
   return filters.map( (filter, index) => Object.assign({}, filter, {filterIndex: index}));
 };
 
