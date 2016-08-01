@@ -19,7 +19,6 @@ import {
 } from 'd3-drag';
 
 class Graph extends Component {
-  
   shouldComponentUpdate(nextProps, nextState) {
     return this.props.groups.length != nextProps.groups.length;
   }

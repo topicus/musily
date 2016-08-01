@@ -12,6 +12,7 @@ const GroupList = ({ sheet, groups, filters}) => {
         <Group
           key={`group-${index}`}
           group={group}
+          index={index}
           />
       ))}
     </div>

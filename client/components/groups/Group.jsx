@@ -7,7 +7,7 @@ import partialRight from 'lodash/partialRight';
 
 const round2 = partialRight(round, 2);
 
-const Group = ({ sheet, group}) => (
+const Group = ({ sheet, group, index}) => (
   <div className={sheet.classes.group}>
     <ul className={sheet.classes.groupStatistics}>
       <li><strong>Hombres:</strong> {round2(group.statistics.men_count)}</li>
