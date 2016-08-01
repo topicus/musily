@@ -10,7 +10,7 @@
         margin: 0;
       }
       body {
-        overflow: auto;
+        overflow: hidden;
       }
       .root {
         width: 100%;

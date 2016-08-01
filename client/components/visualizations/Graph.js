@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import useSheet from 'react-jss';
 import { connect } from 'react-redux';
+import Dimensions from 'react-dimensions'
 import {
   event,
   select,
@@ -18,95 +19,72 @@ import {
 } from 'd3-drag';
 
 class Graph extends Component {
-  componentDidUpdate() {
-    
-    // let group = this.props.groups[0];
-
-    // if(group) {
-    //   let graph = group.graph;
-    //   let nodes = graph.nodes;
-    //   let links = graph.links;
-    //   nodes = Object.keys(nodes).map( (key) =>{
-    //     return {id: +key, canciones: +graph.nodes[key]['canciones']};
-    //   });
-    //   links = links.map( (link) =>{
-    //     return {source: +link['usuario_1'], target: +link['usuario_2'], value: +link['canciones']};
-    //   });
-    //   var svg = select('svg'),
-    //     width = +svg.attr('width'),
-    //     height = +svg.attr('height');
-
-    //   var simulation = forceSimulation()
-    //     .force("link", forceLink().id(function(d) { return d.id; }))
-    //     .force("charge", forceManyBody())
-    //     .force("center", forceCenter(width / 2, height / 2));
-
-    //   var link = svg.append("g")
-    //     .attr("class", "links")
-    //     .selectAll("line")
-    //     .data(links)
-    //     .enter().append("line");
-
-    //   var node = svg.append("g")
-    //       .attr("class", "nodes")
-    //     .selectAll("circle")
-    //     .data(nodes)
-    //     .enter().append("circle")
-    //       .attr("r", 2.5)
-    //       .call(drag()
-    //           .on("start", dragstarted)
-    //           .on("drag", dragged)
-    //           .on("end", dragended));
-
-    //   node.append("title")
-    //       .text(function(d) { return d.id; });
-
-    //   simulation
-    //       .nodes(nodes)
-    //       .on("tick", ticked);
-
-    //   simulation.force("link")
-    //       .links(links);  
-    // }
   
-    
-    // function ticked() {
-    //   link
-    //     .attr("x1", function(d) { return d.source.x; })
-    //     .attr("y1", function(d) { return d.source.y; })
-    //     .attr("x2", function(d) { return d.target.x; })
-    //     .attr("y2", function(d) { return d.target.y; });
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.props.groups.length != nextProps.groups.length;
+  }
 
-    //   node
-    //     .attr("cx", function(d) { return d.x; })
-    //     .attr("cy", function(d) { return d.y; });
-    // }
-    // function dragstarted(d) {
-    //   if (!event.active) simulation.alphaTarget(0.3).restart();
-    //   d.fx = d.x;
-    //   d.fy = d.y;
-    // }
+  componentDidUpdate() {
+    let group = this.props.groups[this.props.groups.length - 1];
+    if(group) {
+      let nodes = group.nodes;
+      let links = group.edges;
+      nodes = nodes.map( (node) =>{
+        return {id: +node['usuario'], canciones: +node['canciones']};
+      });
+      links = links.map( (link) =>{
+        return {source: +link[0], target: +link[1], value: +link[2]['canciones']};
+      });
 
-    // function dragged(d) {
-    //   d.fx = event.x;
-    //   d.fy = event.y;
-    // }
+      let canvas = document.querySelector('canvas'),
+          context = canvas.getContext('2d'),
+          width = canvas.width,
+          height = canvas.height;
 
-    // function dragended(d) {
-    //   if (!event.active) simulation.alphaTarget(0);
-    //   d.fx = null;
-    //   d.fy = null;
-    // }    
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      let k = Math.sqrt(nodes.length / (width * height));
+      let simulation = forceSimulation()
+          .force('link', forceLink().id(function(d) { return d.id; }))
+          .force('charge', forceManyBody().distanceMax(k*400))
+          .force('center', forceCenter())
+
+      simulation
+          .nodes(nodes)
+          .on('tick', ticked);
+
+      simulation.force('link')
+          .links(links);  
+
+      function drawLink(d) {
+        context.moveTo(d.source.x, d.source.y);
+        context.lineTo(d.target.x, d.target.y);
+      }
+
+      function drawNode(d) {
+        context.moveTo(d.x + 3, d.y);
+        context.arc(d.x, d.y, 3, 0, 2 * Math.PI);
+      }
+        
+      function ticked() {
+        context.clearRect(0, 0, width, height);
+        context.save();
+        context.translate(width / 2, height / 2);
+        context.beginPath();
+        links.forEach(drawLink);
+        context.strokeStyle = '#aaa';
+        context.stroke();
+        context.beginPath();
+        nodes.forEach(drawNode);
+        context.fill();
+        context.restore();
+      }
+    }
+
   }  
   render() {
     return (
       <div ref="root" className="graph">
-        <svg ref="svg"     
-          width="100%"
-          height="100%"
-          preserveAspectRatio="none"
-          >
-        </svg>
+        <canvas width={this.props.containerWidth} height={this.props.containerHeight}></canvas>
       </div>
     );
   }
@@ -118,9 +96,11 @@ const STYLES = {
   }
 }
 
-export default connect(
+Graph = connect(
   state => state,
   {}
 )(
   useSheet(Graph, STYLES)
 );
+
+export default Dimensions()(Graph);

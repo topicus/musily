@@ -10,7 +10,7 @@ import jssPx from 'jss-px';
 import jssNested from 'jss-nested';
 import jssCamelCase from 'jss-camel-case';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware} from 'redux';
 import reducers from './reducers';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';

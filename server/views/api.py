@@ -18,11 +18,12 @@ def filter():
   people, friendships = friend.filter(filters)
   statistics = GraphStatistics(gph, people)
   for k, p in people.iteritems():
-    gph.add_node(p['usuario'])
+    gph.add_node(p, 'usuario')
   for f in friendships:
     gph.add_edge([f['usuario_1'], f['usuario_2']], songs=f['canciones'])
   st = statistics.compute()
   return jsonify({
     'statistics': st, 
-    'graph': gph.graph
+    'nodes': gph.nodes,
+    'edges': gph.edges
   })

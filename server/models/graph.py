@@ -9,13 +9,15 @@ class Graph(object):
     self.graph = {}
     self.groups = []
     self.edges = []
+    self.nodes = []
     self.__processed = False
 
-  def add_node(self, node):
-    if node not in self.graph:
+  def add_node(self, node, key):
+    if node[key] not in self.graph:
       self.__processed = False
-      self.call('add_node_callback', node)
-      self.graph[node] = set() 
+      self.nodes.append(node)
+      self.call('add_node_callback', node[key])
+      self.graph[node[key]] = set() 
 
   def add_edge(self, edge, **kwargs):
     self.__processed = False
